@@ -12,7 +12,6 @@ namespace ToDo
         {
             SelectPage selectPage = new SelectPage();
             selectPage.Main();
-            Console.ReadLine();
         }
     }
 }

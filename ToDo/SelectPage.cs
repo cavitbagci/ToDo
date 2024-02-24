@@ -8,85 +8,99 @@ namespace ToDo
 {
     internal class SelectPage
     {
-        private List<List> lists;
+        private List<ToDoList> lists;
+
         public void Liste()
         {
-            lists = new List<List>()
+            lists = new List<ToDoList>()
             {
-                new List("deneme","denemeiçerik","a"),
-                new List("deneme2","denemeiçerik2","b")
+                new ToDoList("deneme","denemeiçerik","a"),
+                new ToDoList("deneme2","denemeiçerik2","b"),
             };
         }
 
-        private List<List> lists2;
-        private void InProgressLine()
+        private List<ToDoList> lists2;
+
+        public void InProgressLine()
         {
-            lists2 = new List<List>()
+            lists2 = new List<ToDoList>()
             {
-                new List("deneme3","denemeiçerik","a"),
-                new List("deneme4","denemeiçerik2","b")
+                new ToDoList("deneme3","denemeiçerik","a"),
+                new ToDoList("deneme4","denemeiçerik2","b"),
             };
         }
 
-        private List<List> lists3;
-        private void DoneLine()
+        private List<ToDoList> lists3;
+
+        public void DoneLine()
         {
-            lists3 = new List<List>()
+            lists3 = new List<ToDoList>()
             {
-               new List("Başlık")
+               new ToDoList("Başlık")
             };
         }
-        internal void Main()
-        {
-            Console.WriteLine("Hangi işlemi yapmak istediğinizi seçiniz.");
-            Console.WriteLine("(1) Board Listelemek \n(2) Board'a Kart Eklemek \n(3) Board'dan Kart Silmek \n(4) Kart Taşımak");
 
-            int secim = int.Parse(Console.ReadLine());
+        public void Main()
+        {
             Liste();
             InProgressLine();
             DoneLine();
-            switch (secim)
+            bool Continue = true;
+            while (Continue)
             {
-                case 1:
-                    ListBoard();
-                    break;
-                case 2:
-                    Console.WriteLine();
-                    break;
-                case 3:
-                    Console.WriteLine();
-                    break;
-                case 4:
-                    Console.WriteLine();
-                    break;
-                default:
-                    Console.WriteLine("Geçersiz değer girdiniz lütfen 1-4 arasında bir değer giriniz.");
-                    break;
+                Console.WriteLine("Hangi işlemi yapmak istediğinizi seçiniz.");
+                Console.WriteLine("(1) Board Listelemek \n(2) Board'a Kart Eklemek \n(3) Board'dan Kart Silmek \n(4) Kart Taşımak \n(0) Uygulamadan Çıkmak");
+                int secim = int.Parse(Console.ReadLine());
+                switch (secim)
+                {
+                    case 0:
+                        Continue = false;
+                        break;
+                    case 1:
+                        ListBoard();
+                        break;
+                    case 2:
+                        AddBoard();
+                        break;
+                    case 3:
+                        Console.WriteLine();
+                        break;
+                    case 4:
+                        Console.WriteLine();
+                        break;
+                    default:
+                        Console.WriteLine("Geçersiz değer girdiniz lütfen 1-4 arasında bir değer giriniz.");
+                        break;
+                }
             }
         }
 
         private void ListBoard()
         {
+
+            Dictionary<int, string> kisiler = new Dictionary<int, string>();
+            kisiler.Add(1, "Administrator");
             Console.WriteLine("TODO Line");
             Console.WriteLine("************************");
-            foreach (List list in lists)
+            foreach (ToDoList todolist in lists)
             {
-                Console.WriteLine("Başlık : {0} \nİçerik : {1} \nAtanan Kişi : {2}", list.Baslik, list.Icerik, list.AtananKisi);
+                Console.WriteLine("Başlık : {0} \nİçerik : {1} \nAtanan Kişi : {2}", todolist.Baslik, todolist.Icerik, todolist.AtananKisi);
                 Console.WriteLine("");
             }
             Console.WriteLine("IN PROGRESS Line");
             Console.WriteLine("************************");
-            foreach (List list in lists2)
+            foreach (ToDoList todolist in lists2)
             {
-                Console.WriteLine("Başlık : {0} \nİçerik : {1} \nAtanan Kişi : {2}", list.Baslik, list.Icerik, list.AtananKisi);
+                Console.WriteLine("Başlık : {0} \nİçerik : {1} \nAtanan Kişi : {2}", todolist.Baslik, todolist.Icerik, todolist.AtananKisi);
                 Console.WriteLine("");
             }
             Console.WriteLine("DONE Line");
             Console.WriteLine("************************");
-            foreach(List list in lists3)
+            foreach (ToDoList todolist in lists3)
             {
-                Console.WriteLine(list.Baslik);
+                Console.WriteLine(todolist.Baslik);
             }
+            Console.WriteLine();
             /*TODO Line
             ************************
             Başlık      :
@@ -106,7 +120,18 @@ namespace ToDo
             ~ BOŞ ~
             */
         }
+        private void AddBoard()
+        {
+            Console.WriteLine("Başlık giriniz.");
+            string Baslik = Console.ReadLine();
+            Console.WriteLine("İçerik giriniz.");
+            string Icerik = Console.ReadLine();
+            Console.WriteLine("Kişi seçiniz");
+            string Kisi = Console.ReadLine();
+            ToDoList addList = new ToDoList(Baslik,Icerik,Kisi);
+            lists.Add(addList);
+            Console.WriteLine("Not başarıyla eklendi!");
+            Console.WriteLine();
+        }
     }
-
-
 }
