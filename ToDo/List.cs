@@ -12,28 +12,28 @@ namespace ToDo
         public string Icerik { get; set; }
         public string AtananKisi { get; set; }
         //public Dictionary<int, string> Deneme { get; set; }
-
+        public Boyut Boyut { get; set; }
         public ToDoList(string baslik)
         {
             Baslik = baslik;
         }
                     
-        internal ToDoList(string baslik, string icerik, string atananKisi)
+        internal ToDoList(string baslik, string icerik, string atananKisi, Boyut boyut)
         {
             Baslik = baslik;
             Icerik = icerik;
             AtananKisi = atananKisi;
-
+            Boyut = boyut;
         }
     }
 
-    internal enum Boyut
+    public enum Boyut
     {
-        xs = 0,
-        s = 1,
-        m = 2,
-        l = 3,
-        xl = 4
+        XS = 0,
+        S = 1,
+        M = 2,
+        L = 3,
+        XL = 4
     }
 
     //internal class TakimArkadaslari

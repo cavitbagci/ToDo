@@ -14,8 +14,8 @@ namespace ToDo
         {
             lists = new List<ToDoList>()
             {
-                new ToDoList("deneme","denemeiçerik","a"),
-                new ToDoList("deneme2","denemeiçerik2","b"),
+                new ToDoList("deneme","denemeiçerik","a",Boyut.XS),
+                new ToDoList("deneme2","denemeiçerik2","b", Boyut.S),
             };
         }
 
@@ -25,8 +25,8 @@ namespace ToDo
         {
             lists2 = new List<ToDoList>()
             {
-                new ToDoList("deneme3","denemeiçerik","a"),
-                new ToDoList("deneme4","denemeiçerik2","b"),
+                new ToDoList("deneme3","denemeiçerik","a", Boyut.M),
+                new ToDoList("deneme4","denemeiçerik2","b", Boyut.XL),
             };
         }
 
@@ -50,7 +50,17 @@ namespace ToDo
             {
                 Console.WriteLine("Hangi işlemi yapmak istediğinizi seçiniz.");
                 Console.WriteLine("(1) Board Listelemek \n(2) Board'a Kart Eklemek \n(3) Board'dan Kart Silmek \n(4) Kart Taşımak \n(0) Uygulamadan Çıkmak");
-                int secim = int.Parse(Console.ReadLine());
+                //int secim = int.Parse(Console.ReadLine());
+                string giris = Console.ReadLine();
+                if (int.TryParse(giris, out int secim))
+                {
+                    Console.WriteLine("Seçiminiz: " + secim);
+                }
+                else
+                {
+                    Console.WriteLine("Geçersiz değer girdiniz lütfen 1-4 arasında bir değer giriniz.");
+                    Console.ReadLine();
+                }
                 switch (secim)
                 {
                     case 0:
@@ -63,10 +73,10 @@ namespace ToDo
                         AddBoard();
                         break;
                     case 3:
-                        Console.WriteLine();
+                        RemoveBoard();
                         break;
                     case 4:
-                        Console.WriteLine();
+                        MoveBoard();
                         break;
                     default:
                         Console.WriteLine("Geçersiz değer girdiniz lütfen 1-4 arasında bir değer giriniz.");
@@ -80,18 +90,19 @@ namespace ToDo
 
             Dictionary<int, string> kisiler = new Dictionary<int, string>();
             kisiler.Add(1, "Administrator");
+            Console.WriteLine();
             Console.WriteLine("TODO Line");
             Console.WriteLine("************************");
             foreach (ToDoList todolist in lists)
             {
-                Console.WriteLine("Başlık : {0} \nİçerik : {1} \nAtanan Kişi : {2}", todolist.Baslik, todolist.Icerik, todolist.AtananKisi);
+                Console.WriteLine("Başlık : {0} \nİçerik : {1} \nAtanan Kişi : {2} \nBoyut : {3}", todolist.Baslik, todolist.Icerik, kisiler[1],todolist.Boyut);
                 Console.WriteLine("");
             }
             Console.WriteLine("IN PROGRESS Line");
             Console.WriteLine("************************");
             foreach (ToDoList todolist in lists2)
             {
-                Console.WriteLine("Başlık : {0} \nİçerik : {1} \nAtanan Kişi : {2}", todolist.Baslik, todolist.Icerik, todolist.AtananKisi);
+                Console.WriteLine("Başlık : {0} \nİçerik : {1} \nAtanan Kişi : {2} \nBoyut : {3}", todolist.Baslik, todolist.Icerik, kisiler[1],todolist.Boyut);
                 Console.WriteLine("");
             }
             Console.WriteLine("DONE Line");
@@ -124,14 +135,85 @@ namespace ToDo
         {
             Console.WriteLine("Başlık giriniz.");
             string Baslik = Console.ReadLine();
+
             Console.WriteLine("İçerik giriniz.");
             string Icerik = Console.ReadLine();
+
             Console.WriteLine("Kişi seçiniz");
             string Kisi = Console.ReadLine();
-            ToDoList addList = new ToDoList(Baslik,Icerik,Kisi);
+
+            Console.WriteLine("Boyut giriniz.(XS,S,M,L,XL)");
+            string boyut = Console.ReadLine();
+            Boyut boyutEnum;
+            Enum.TryParse(boyut, out boyutEnum);
+
+            ToDoList addList = new ToDoList(Baslik, Icerik, Kisi,boyutEnum);
             lists.Add(addList);
             Console.WriteLine("Not başarıyla eklendi!");
             Console.WriteLine();
+        }
+        private void RemoveBoard()
+        {
+            Console.WriteLine("TODO Listesinden not silmek istiyorsanız (1) \nIN PROGRESS Listesinden not silmek istiyorsanız (2)");
+            int listesec = int.Parse(Console.ReadLine());
+            switch (listesec)
+            {
+                case 1:
+                    Console.WriteLine("Silmek istediğiniz notun başlığını giriniz");
+                    string aranan = Console.ReadLine();
+                    ToDoList bulunanNot = lists.FirstOrDefault(ToDoList =>
+                    ToDoList.Baslik.Equals(aranan, StringComparison.OrdinalIgnoreCase));
+                    if (bulunanNot == null)
+                    {
+                        Console.WriteLine("Aradığınız başlıkta bir not bulunamadı");
+                    }
+                    else
+                    {
+                        Console.WriteLine("{0} başlıklı not silinecek emin misin? (Y/N).", aranan);
+                        string onay = Console.ReadLine();
+                        switch (onay)
+                        {
+                            case "y":
+                                lists.Remove(bulunanNot);
+                                Console.WriteLine("{0} başlıklı not silindi.", aranan);
+                                break;
+                            case "n":
+                                Console.WriteLine("Silme işlemi iptal edildi.");
+                                break;
+                        }
+                    }
+                    break;
+                case 2:
+                    Console.WriteLine("Silmek istediğiniz notun başlığını giriniz");
+                    string aranan2 = Console.ReadLine();
+                    ToDoList bulunanNot2 = lists2.FirstOrDefault(ToDoList =>
+                    ToDoList.Baslik.Equals(aranan2, StringComparison.OrdinalIgnoreCase));
+                    if (bulunanNot2 == null)
+                    {
+                        Console.WriteLine("Aradığınız başlıkta bir not bulunamadı");
+                    }
+                    else
+                    {
+                        Console.WriteLine("{0} başlıklı not silinecek emin misin? (Y/N).", aranan2);
+                        string onay2 = Console.ReadLine();
+                        switch (onay2)
+                        {
+                            case "y":
+                                lists2.Remove(bulunanNot2);
+                                Console.WriteLine("{0} başlıklı not silindi.", aranan2);
+                                break;
+                            case "n":
+                                Console.WriteLine("Silme işlemi iptal edildi.");
+                                break;
+                        }
+                    }
+                    break;
+            }
+
+        }
+        private void MoveBoard()
+        {
+
         }
     }
 }
