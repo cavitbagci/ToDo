@@ -14,8 +14,8 @@ namespace ToDo
         {
             lists = new List<ToDoList>()
             {
-                new ToDoList("deneme","denemeiçerik","a",Boyut.XS),
-                new ToDoList("deneme2","denemeiçerik2","b", Boyut.S),
+                new ToDoList("deneme","denemeiçerik",1,Boyut.XS),
+                new ToDoList("deneme2","denemeiçerik2",2, Boyut.S),
             };
         }
 
@@ -25,8 +25,8 @@ namespace ToDo
         {
             lists2 = new List<ToDoList>()
             {
-                new ToDoList("deneme3","denemeiçerik","a", Boyut.M),
-                new ToDoList("deneme4","denemeiçerik2","b", Boyut.XL),
+                new ToDoList("deneme3","denemeiçerik",3, Boyut.M),
+                new ToDoList("deneme4","denemeiçerik2",4, Boyut.XL),
             };
         }
 
@@ -58,7 +58,7 @@ namespace ToDo
                 }
                 else
                 {
-                    Console.WriteLine("Geçersiz değer girdiniz lütfen 1-4 arasında bir değer giriniz.");
+                    Console.WriteLine("Geçersiz değer girdiniz lütfen 0-4 arasında bir değer giriniz.");
                     Console.ReadLine();
                 }
                 switch (secim)
@@ -79,7 +79,7 @@ namespace ToDo
                         MoveBoard();
                         break;
                     default:
-                        Console.WriteLine("Geçersiz değer girdiniz lütfen 1-4 arasında bir değer giriniz.");
+                        Console.WriteLine("Geçersiz değer girdiniz lütfen 0-4 arasında bir değer giriniz.");
                         break;
                 }
             }
@@ -87,22 +87,19 @@ namespace ToDo
 
         private void ListBoard()
         {
-
-            Dictionary<int, string> kisiler = new Dictionary<int, string>();
-            kisiler.Add(1, "Administrator");
             Console.WriteLine();
             Console.WriteLine("TODO Line");
             Console.WriteLine("************************");
             foreach (ToDoList todolist in lists)
             {
-                Console.WriteLine("Başlık : {0} \nİçerik : {1} \nAtanan Kişi : {2} \nBoyut : {3}", todolist.Baslik, todolist.Icerik, kisiler[1],todolist.Boyut);
+                Console.WriteLine("Başlık : {0} \nİçerik : {1} \nAtanan Kişi : {2} \nBoyut : {3}", todolist.Baslik, todolist.Icerik, todolist.GetKisiAdi(todolist.AtananKisiId), todolist.Boyut);
                 Console.WriteLine("");
             }
             Console.WriteLine("IN PROGRESS Line");
             Console.WriteLine("************************");
             foreach (ToDoList todolist in lists2)
             {
-                Console.WriteLine("Başlık : {0} \nİçerik : {1} \nAtanan Kişi : {2} \nBoyut : {3}", todolist.Baslik, todolist.Icerik, kisiler[1],todolist.Boyut);
+                Console.WriteLine("Başlık : {0} \nİçerik : {1} \nAtanan Kişi : {2} \nBoyut : {3}", todolist.Baslik, todolist.Icerik, todolist.GetKisiAdi(todolist.AtananKisiId), todolist.Boyut);
                 Console.WriteLine("");
             }
             Console.WriteLine("DONE Line");
@@ -139,15 +136,15 @@ namespace ToDo
             Console.WriteLine("İçerik giriniz.");
             string Icerik = Console.ReadLine();
 
-            Console.WriteLine("Kişi seçiniz");
-            string Kisi = Console.ReadLine();
+            Console.WriteLine("Kişinin Id'sini giriniz.");
+            int Kisi = int.Parse(Console.ReadLine());
 
             Console.WriteLine("Boyut giriniz.(XS,S,M,L,XL)");
             string boyut = Console.ReadLine();
             Boyut boyutEnum;
             Enum.TryParse(boyut, out boyutEnum);
 
-            ToDoList addList = new ToDoList(Baslik, Icerik, Kisi,boyutEnum);
+            ToDoList addList = new ToDoList(Baslik, Icerik, Kisi, boyutEnum);
             lists.Add(addList);
             Console.WriteLine("Not başarıyla eklendi!");
             Console.WriteLine();

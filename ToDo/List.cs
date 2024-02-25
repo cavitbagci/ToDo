@@ -8,22 +8,43 @@ namespace ToDo
 {
     public class ToDoList
     {
+        private static Dictionary<int, string> Kullanicilar = new Dictionary<int, string>
+        {
+            {1, "Cavit"},
+            {2, "Ahmet"},
+            {3, "Mehmet"},
+            {4, "Irmak"},
+            {5, "Ayşe"},
+            {6, "Fatma"}
+        };
+
         public string Baslik { get; set; }
         public string Icerik { get; set; }
-        public string AtananKisi { get; set; }
-        //public Dictionary<int, string> Deneme { get; set; }
+        public int AtananKisiId { get; set; }
         public Boyut Boyut { get; set; }
         public ToDoList(string baslik)
         {
             Baslik = baslik;
         }
-                    
-        internal ToDoList(string baslik, string icerik, string atananKisi, Boyut boyut)
+
+        internal ToDoList(string baslik, string icerik, int atananKisiId, Boyut boyut)
         {
             Baslik = baslik;
             Icerik = icerik;
-            AtananKisi = atananKisi;
+            AtananKisiId = atananKisiId;
             Boyut = boyut;
+        }
+
+        public string GetKisiAdi(int id)
+        {
+            if (Kullanicilar.ContainsKey(id))
+            {
+                return Kullanicilar[id];
+            }
+            else
+            {
+                return "Böyle birisi bulunamadı";
+            }
         }
     }
 
@@ -35,15 +56,4 @@ namespace ToDo
         L = 3,
         XL = 4
     }
-
-    //internal class TakimArkadaslari
-    //{
-    //    public static Dictionary<int, string> TakimUyeleri = new Dictionary<int, string>
-    //    {
-    //        {1, "Ahmet"},
-    //        {2, "Mehmet"},
-    //        {3, "Ayşe"},
-    //        {4, "Fatma"}
-    //    };
-    //}
 }
