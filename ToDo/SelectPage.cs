@@ -14,8 +14,8 @@ namespace ToDo
         {
             lists = new List<ToDoList>()
             {
-                new ToDoList("deneme","denemeiçerik",1,Boyut.XS),
-                new ToDoList("deneme2","denemeiçerik2",2, Boyut.S),
+                new ToDoList("deneme","İş bulunacak",1,Boyut.XS),
+                new ToDoList("deneme2","Evlenilecek",2, Boyut.S),
             };
         }
 
@@ -25,7 +25,7 @@ namespace ToDo
         {
             lists2 = new List<ToDoList>()
             {
-                new ToDoList("deneme3","denemeiçerik",3, Boyut.M),
+                new ToDoList("deneme3","Saygınlık",3, Boyut.M),
                 new ToDoList("deneme4","denemeiçerik2",4, Boyut.XL),
             };
         }
@@ -50,7 +50,6 @@ namespace ToDo
             {
                 Console.WriteLine("Hangi işlemi yapmak istediğinizi seçiniz.");
                 Console.WriteLine("(1) Board Listelemek \n(2) Board'a Kart Eklemek \n(3) Board'dan Kart Silmek \n(4) Kart Taşımak \n(0) Uygulamadan Çıkmak");
-                //int secim = int.Parse(Console.ReadLine());
                 string giris = Console.ReadLine();
                 if (int.TryParse(giris, out int secim))
                 {
@@ -109,24 +108,6 @@ namespace ToDo
                 Console.WriteLine(todolist.Baslik);
             }
             Console.WriteLine();
-            /*TODO Line
-            ************************
-            Başlık      :
-            İçerik      :
-            Atanan Kişi :
-            Büyüklük    :
- 
-            IN PROGRESS Line
-            ************************
-            Başlık      :
-            İçerik      :
-            Atanan Kişi :
-            Büyüklük    :
-
-            DONE Line
-            ************************
-            ~ BOŞ ~
-            */
         }
         private void AddBoard()
         {
@@ -210,7 +191,65 @@ namespace ToDo
         }
         private void MoveBoard()
         {
-
+            Console.WriteLine("Hangi kısımdan not taşımak istiyorsunuz? \n(1)TODO Line \n(2)IN PROGRESS Line");
+            int secilen = int.Parse(Console.ReadLine());
+            switch (secilen)
+            {
+                case 1:
+                    Console.WriteLine("Taşımak istediğiniz notun başlığını giriniz.");
+                    string aranan = Console.ReadLine();
+                    ToDoList bulunanBaslik = lists.FirstOrDefault(ToDoList =>
+                    ToDoList.Baslik.Equals(aranan, StringComparison.OrdinalIgnoreCase));
+                    if (bulunanBaslik == null)
+                    {
+                        Console.WriteLine("Aradığınız başlıkta bir not bulunamadı. Lütfen tekrar deneyiniz.");
+                        MoveBoard();
+                    }
+                    else
+                    {
+                        Console.WriteLine("{0} Başlıklı not 'IN PROGRESS' Line kısmına taşınacaktır onaylıyor musunuz(Y/N)", aranan);
+                        string onay = Console.ReadLine();
+                        switch (onay)
+                        {
+                            case "y":
+                                lists2.Add(bulunanBaslik);
+                                lists.Remove(bulunanBaslik);
+                                Console.WriteLine("{0} Başlıklı not başarıyla IN PROGRESS Line kısmına taşındı!", aranan);
+                                break;
+                            case "n":
+                                Console.WriteLine("İşlem iptal edildi.");
+                                break;
+                        }
+                    }
+                    break;
+                case 2:
+                    Console.WriteLine("Taşımak istediğiniz notun başlığını giriniz.");
+                    string aranan2 = Console.ReadLine();
+                    ToDoList bulunanBaslik2 = lists.FirstOrDefault(ToDoList =>
+                    ToDoList.Baslik.Equals(aranan2, StringComparison.OrdinalIgnoreCase));
+                    if (bulunanBaslik2 == null)
+                    {
+                        Console.WriteLine("Aradığınız başlıkta bir not bulunamadı. Lütfen tekrar deneyiniz.");
+                        MoveBoard();
+                    }
+                    else
+                    {
+                        Console.WriteLine("{0} Başlıklı not 'DONE Line' kısmına taşınacaktır onaylıyor musunuz(Y/N)", aranan2);
+                        string onay2 = Console.ReadLine();
+                        switch (onay2)
+                        {
+                            case "y":
+                                lists3.Add(bulunanBaslik2);
+                                lists2.Remove(bulunanBaslik2);
+                                Console.WriteLine("{0} Başlıklı not başarıyla Done Line kısmına taşındı!", aranan2);
+                                break;
+                            case "n":
+                                Console.WriteLine("İşlem iptal edildi.");
+                                break;
+                        }
+                    }
+                    break;
+            }
         }
     }
 }
